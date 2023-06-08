@@ -25,9 +25,9 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../chatview.dart';
-import '../utils/constants.dart';
-import '../utils/package_strings.dart';
+import 'package:chatview/chatview.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
+import 'package:chatview/src/utils/package_strings.dart';
 
 class ChatUITextField extends StatefulWidget {
   const ChatUITextField({

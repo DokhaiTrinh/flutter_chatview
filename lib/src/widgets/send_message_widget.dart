@@ -29,8 +29,7 @@ import 'package:chatview/src/utils/package_strings.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-
-import '../utils/constants.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
 
 class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget({

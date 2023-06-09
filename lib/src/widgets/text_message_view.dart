@@ -140,6 +140,6 @@ class TextMessageView extends StatelessWidget {
               : BorderRadius.circular(replyBorderRadius2));
 
   Color get _color => isMessageBySender
-      ? outgoingChatBubbleConfig?.color ?? Colors.purple
+      ? outgoingChatBubbleConfig?.color ?? Colors.white
       : inComingChatBubbleConfig?.color ?? Colors.grey.shade500;
 }

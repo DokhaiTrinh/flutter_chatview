@@ -133,6 +133,56 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                   ),
             )
           else
+            _inputText.isNotEmpty
+                ? IconButton(
+              color:
+              sendMessageConfig?.defaultSendButtonColor ?? Colors.green,
+              onPressed: () {
+                widget.onPressed();
+                setState(() => _inputText = '');
+              },
+              icon: sendMessageConfig?.sendButtonIcon ??
+                  const Icon(Icons.send),
+            )
+                : Row(
+              children: [
+                if (!isRecording) ...[
+                  IconButton(
+                    constraints: const BoxConstraints(),
+                    onPressed: () => _onIconPressed(ImageSource.camera),
+                    icon: imagePickerIconsConfig?.cameraImagePickerIcon ??
+                        Icon(
+                          Icons.camera_alt_outlined,
+                          color: imagePickerIconsConfig?.cameraIconColor,
+                        ),
+                  ),
+                  IconButton(
+                    constraints: const BoxConstraints(),
+                    onPressed: () => _onIconPressed(ImageSource.gallery),
+                    icon: imagePickerIconsConfig?.galleryImagePickerIcon ??
+                        Icon(
+                          Icons.image,
+                          color: imagePickerIconsConfig?.galleryIconColor,
+                        ),
+                  ),
+                ],
+                if (widget.sendMessageConfig?.allowRecordingVoice ??
+                    true && Platform.isIOS && Platform.isAndroid)
+                  IconButton(
+                    onPressed: _recordOrStop,
+                    icon: (isRecording
+                        ? voiceRecordingConfig?.micIcon
+                        : voiceRecordingConfig?.stopIcon) ??
+                        Icon(isRecording ? Icons.stop : Icons.mic),
+                    color: voiceRecordingConfig?.recorderIconColor,
+                  ),
+                IconButton(
+                  onPressed: () => widget.onPressedMap?.call(),
+                  icon: Icon(Icons.add_circle_outline),
+                  color: voiceRecordingConfig?.recorderIconColor,
+                ),
+              ],
+            ),
             Expanded(
               child: TextField(
                 focusNode: widget.focusNode,
@@ -170,56 +220,6 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                 ),
               ),
             ),
-          _inputText.isNotEmpty
-              ? IconButton(
-                  color:
-                      sendMessageConfig?.defaultSendButtonColor ?? Colors.green,
-                  onPressed: () {
-                    widget.onPressed();
-                    setState(() => _inputText = '');
-                  },
-                  icon: sendMessageConfig?.sendButtonIcon ??
-                      const Icon(Icons.send),
-                )
-              : Row(
-                  children: [
-                    if (!isRecording) ...[
-                      IconButton(
-                        constraints: const BoxConstraints(),
-                        onPressed: () => _onIconPressed(ImageSource.camera),
-                        icon: imagePickerIconsConfig?.cameraImagePickerIcon ??
-                            Icon(
-                              Icons.camera_alt_outlined,
-                              color: imagePickerIconsConfig?.cameraIconColor,
-                            ),
-                      ),
-                      IconButton(
-                        constraints: const BoxConstraints(),
-                        onPressed: () => _onIconPressed(ImageSource.gallery),
-                        icon: imagePickerIconsConfig?.galleryImagePickerIcon ??
-                            Icon(
-                              Icons.image,
-                              color: imagePickerIconsConfig?.galleryIconColor,
-                            ),
-                      ),
-                    ],
-                    if (widget.sendMessageConfig?.allowRecordingVoice ??
-                        true && Platform.isIOS && Platform.isAndroid)
-                      IconButton(
-                        onPressed: _recordOrStop,
-                        icon: (isRecording
-                                ? voiceRecordingConfig?.micIcon
-                                : voiceRecordingConfig?.stopIcon) ??
-                            Icon(isRecording ? Icons.stop : Icons.mic),
-                        color: voiceRecordingConfig?.recorderIconColor,
-                      ),
-                    IconButton(
-                      onPressed: () => widget.onPressedMap?.call(),
-                      icon: Icon(Icons.add_circle_outline),
-                      color: voiceRecordingConfig?.recorderIconColor,
-                    ),
-                  ],
-                ),
         ],
       ),
     );

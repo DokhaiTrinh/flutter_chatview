@@ -178,8 +178,8 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                   ),
                 IconButton(
                   onPressed: () => widget.onPressedMap?.call(),
-                  icon: Icon(Icons.add_circle_outline),
-                  color: voiceRecordingConfig?.recorderIconColor,
+                  icon: imagePickerIconsConfig?.mapIcon ?? Icon(Icons.add_circle_outline),
+                  color: imagePickerIconsConfig?.mapIconColor,
                 ),
               ],
             ),

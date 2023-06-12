@@ -84,17 +84,25 @@ class ImagePickerIconsConfiguration {
   /// Provides ability to pass custom camera image picker icon.
   final Widget? cameraImagePickerIcon;
 
+  /// Provides ability to pass custom camera image picker icon.
+  final Widget? mapIcon;
+
   /// Used to give color to camera icon.
   final Color? cameraIconColor;
 
   /// Used to give color to gallery icon.
   final Color? galleryIconColor;
 
+  /// Used to give color to gallery icon.
+  final Color? mapIconColor;
+
   const ImagePickerIconsConfiguration({
     this.cameraIconColor,
     this.galleryIconColor,
+    this.mapIcon,
     this.galleryImagePickerIcon,
     this.cameraImagePickerIcon,
+    this.mapIconColor,
   });
 }
 

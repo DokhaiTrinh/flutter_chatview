@@ -102,7 +102,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
           )
         : Align(
             alignment: Alignment.bottomCenter,
-            child: SizedBox(
+            child: Padding( padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 children: [
@@ -186,55 +187,55 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                   ),
                                   _replyMessage.messageType.isVoice
                                       ? Row(
-                                          children: [
-                                            Icon(
-                                              Icons.mic,
-                                              color: widget.sendMessageConfig?.micIconColor,
-                                            ),
-                                            const SizedBox(width: 4),
-                                            if (_replyMessage.voiceMessageDuration != null)
-                                              Text(
-                                                _replyMessage.voiceMessageDuration!.toHHMMSS(),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color:
-                                                      widget.sendMessageConfig?.replyMessageColor ??
-                                                          Colors.black,
-                                                ),
-                                              ),
-                                          ],
-                                        )
+                                    children: [
+                                      Icon(
+                                        Icons.mic,
+                                        color: widget.sendMessageConfig?.micIconColor,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      if (_replyMessage.voiceMessageDuration != null)
+                                        Text(
+                                          _replyMessage.voiceMessageDuration!.toHHMMSS(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                            widget.sendMessageConfig?.replyMessageColor ??
+                                                Colors.black,
+                                          ),
+                                        ),
+                                    ],
+                                  )
                                       : _replyMessage.messageType.isImage
-                                          ? Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.photo,
-                                                  size: 20,
-                                                  color:
-                                                      widget.sendMessageConfig?.replyMessageColor ??
-                                                          Colors.grey.shade700,
-                                                ),
-                                                Text(
-                                                  PackageStrings.photo,
-                                                  style: TextStyle(
-                                                    color: widget
-                                                            .sendMessageConfig?.replyMessageColor ??
-                                                        Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          : Text(
-                                              _replyMessage.message,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color:
-                                                    widget.sendMessageConfig?.replyMessageColor ??
-                                                        Colors.black,
-                                              ),
-                                            ),
+                                      ? Row(
+                                    children: [
+                                      Icon(
+                                        Icons.photo,
+                                        size: 20,
+                                        color:
+                                        widget.sendMessageConfig?.replyMessageColor ??
+                                            Colors.grey.shade700,
+                                      ),
+                                      Text(
+                                        PackageStrings.photo,
+                                        style: TextStyle(
+                                          color: widget
+                                              .sendMessageConfig?.replyMessageColor ??
+                                              Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : Text(
+                                    _replyMessage.message,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color:
+                                      widget.sendMessageConfig?.replyMessageColor ??
+                                          Colors.black,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -253,8 +254,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                   ),
                 ],
               ),
-            ),
-          );
+            ),));
   }
 
   void _onRecordingComplete(String? path) {

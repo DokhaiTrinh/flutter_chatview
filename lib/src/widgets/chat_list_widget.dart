@@ -158,86 +158,92 @@ class _ChatListWidgetState extends State<ChatListWidget>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ValueListenableBuilder<bool>(
-          valueListenable: _isNextPageLoading,
-          builder: (_, isNextPageLoading, child) {
-            if (isNextPageLoading &&
-                (featureActiveConfig?.enablePagination ?? false)) {
-              return SizedBox(
-                height: Scaffold.of(context).appBarMaxHeight,
-                child: Center(
-                  child:
-                      widget.loadingWidget ?? const CircularProgressIndicator(),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
-        Expanded(
-          child: ValueListenableBuilder<bool>(
-            valueListenable: showPopUp,
-            builder: (_, showPopupValue, child) {
-              return Stack(
-                children: [
-                  ChatGroupedListWidget(
-                    showPopUp: showPopupValue,
-                    showTypingIndicator: showTypingIndicator,
-                    scrollController: scrollController,
-                    isEnableSwipeToSeeTime:
-                        featureActiveConfig?.enableSwipeToSeeTime ?? true,
-                    chatBackgroundConfig: widget.chatBackgroundConfig,
-                    assignReplyMessage: widget.assignReplyMessage,
-                    replyMessage: widget.replyMessage,
-                    swipeToReplyConfig: widget.swipeToReplyConfig,
-                    repliedMessageConfig: widget.repliedMessageConfig,
-                    profileCircleConfig: widget.profileCircleConfig,
-                    messageConfig: widget.messageConfig,
-                    chatBubbleConfig: widget.chatBubbleConfig,
-                    typeIndicatorConfig: widget.typeIndicatorConfig,
-                    onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
-                      if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        _reactionPopupKey.currentState?.refreshWidget(
-                          message: message,
-                          xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate < 0
-                              ? -(yCoordinate) - 5
-                              : yCoordinate,
-                        );
-                        showPopUp.value = true;
-                      }
-                      if (featureActiveConfig?.enableReplySnackBar ?? false) {
-                        _showReplyPopup(
-                          message: message,
-                          sendByCurrentUser: message.sendBy == currentUser?.id,
-                        );
-                      }
-                    },
-                    onChatListTap: _onChatListTap,
+    return InkWell(onTap: () {
+      FocusScope.of(context).unfocus();
+    },
+      child: Column(
+        children: [
+            ValueListenableBuilder<bool>(
+            valueListenable: _isNextPageLoading,
+            builder: (_, isNextPageLoading, child) {
+              if (isNextPageLoading &&
+                  (featureActiveConfig?.enablePagination ?? false)) {
+                return SizedBox(
+                  height: Scaffold
+                      .of(context)
+                      .appBarMaxHeight,
+                  child: Center(
+                    child:
+                    widget.loadingWidget ?? const CircularProgressIndicator(),
                   ),
-                  if (featureActiveConfig?.enableReactionPopup ?? false)
-                    ReactionPopup(
-                      key: _reactionPopupKey,
-                      reactionPopupConfig: widget.reactionPopupConfig,
-                      onTap: _onChatListTap,
-                      showPopUp: showPopupValue,
-                    ),
-                ],
-              );
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
             },
           ),
+            Expanded(
+            child: ValueListenableBuilder<bool>(
+              valueListenable: showPopUp,
+              builder: (_, showPopupValue, child) {
+                return Stack(
+                  children: [
+                    ChatGroupedListWidget(
+                      showPopUp: showPopupValue,
+                      showTypingIndicator: showTypingIndicator,
+                      scrollController: scrollController,
+                      isEnableSwipeToSeeTime:
+                      featureActiveConfig?.enableSwipeToSeeTime ?? true,
+                      chatBackgroundConfig: widget.chatBackgroundConfig,
+                      assignReplyMessage: widget.assignReplyMessage,
+                      replyMessage: widget.replyMessage,
+                      swipeToReplyConfig: widget.swipeToReplyConfig,
+                      repliedMessageConfig: widget.repliedMessageConfig,
+                      profileCircleConfig: widget.profileCircleConfig,
+                      messageConfig: widget.messageConfig,
+                      chatBubbleConfig: widget.chatBubbleConfig,
+                      typeIndicatorConfig: widget.typeIndicatorConfig,
+                      onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
+                        if (featureActiveConfig?.enableReactionPopup ?? false) {
+                          _reactionPopupKey.currentState?.refreshWidget(
+                            message: message,
+                            xCoordinate: xCoordinate,
+                            yCoordinate: yCoordinate < 0
+                                ? -(yCoordinate) - 5
+                                : yCoordinate,
+                          );
+                          showPopUp.value = true;
+                        }
+                        if (featureActiveConfig?.enableReplySnackBar ?? false) {
+                          _showReplyPopup(
+                            message: message,
+                            sendByCurrentUser: message.sendBy == currentUser?.id,
+                          );
+                        }
+                      },
+                      onChatListTap: _onChatListTap,
+                    ),
+                    if (featureActiveConfig?.enableReactionPopup ?? false)
+                      ReactionPopup(
+                        key: _reactionPopupKey,
+                        reactionPopupConfig: widget.reactionPopupConfig,
+                        onTap: _onChatListTap,
+                        showPopUp: showPopupValue,
+                      ),
+                  ],
+                );
+              },
+            ),
+          ),
+          ],
         ),
-      ],
-    );
+      );
   }
 
   void _pagination() {
     if (widget.loadMoreData == null || widget.isLastPage == true) return;
     if ((scrollController.position.pixels ==
-            scrollController.position.minScrollExtent) &&
+        scrollController.position.minScrollExtent) &&
         !_isNextPageLoading.value) {
       _isNextPageLoading.value = true;
       widget.loadMoreData!()
@@ -250,54 +256,58 @@ class _ChatListWidgetState extends State<ChatListWidget>
     required bool sendByCurrentUser,
   }) {
     final replyPopup = widget.replyPopupConfig;
-    ScaffoldMessenger.of(context)
+    ScaffoldMessenger
+        .of(context)
         .showSnackBar(
-          SnackBar(
-            duration: const Duration(hours: 1),
-            backgroundColor: replyPopup?.backgroundColor ?? Colors.white,
-            content: replyPopup?.replyPopupBuilder != null
-                ? replyPopup!.replyPopupBuilder!(message, sendByCurrentUser)
-                : ReplyPopupWidget(
-                    buttonTextStyle: replyPopup?.buttonTextStyle,
-                    topBorderColor: replyPopup?.topBorderColor,
-                    onMoreTap: () {
-                      _onChatListTap();
-                      if (replyPopup?.onMoreTap != null) {
-                        replyPopup?.onMoreTap!();
-                      }
-                    },
-                    onReportTap: () {
-                      _onChatListTap();
-                      if (replyPopup?.onReportTap != null) {
-                        replyPopup?.onReportTap!();
-                      }
-                    },
-                    onUnsendTap: () {
-                      _onChatListTap();
-                      if (replyPopup?.onUnsendTap != null) {
-                        replyPopup?.onUnsendTap!(message);
-                      }
-                    },
-                    onReplyTap: () {
-                      widget.assignReplyMessage(message);
-                      if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        showPopUp.value = false;
-                      }
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      if (replyPopup?.onReplyTap != null) {
-                        replyPopup?.onReplyTap!(message);
-                      }
-                    },
-                    sendByCurrentUser: sendByCurrentUser,
-                  ),
-            padding: EdgeInsets.zero,
-          ),
-        )
+      SnackBar(
+        duration: const Duration(hours: 1),
+        backgroundColor: replyPopup?.backgroundColor ?? Colors.white,
+        content: replyPopup?.replyPopupBuilder != null
+            ? replyPopup!.replyPopupBuilder!(message, sendByCurrentUser)
+            : ReplyPopupWidget(
+          buttonTextStyle: replyPopup?.buttonTextStyle,
+          topBorderColor: replyPopup?.topBorderColor,
+          onMoreTap: () {
+            _onChatListTap();
+            if (replyPopup?.onMoreTap != null) {
+              replyPopup?.onMoreTap!();
+            }
+          },
+          onReportTap: () {
+            _onChatListTap();
+            if (replyPopup?.onReportTap != null) {
+              replyPopup?.onReportTap!();
+            }
+          },
+          onUnsendTap: () {
+            _onChatListTap();
+            if (replyPopup?.onUnsendTap != null) {
+              replyPopup?.onUnsendTap!(message);
+            }
+          },
+          onReplyTap: () {
+            widget.assignReplyMessage(message);
+            if (featureActiveConfig?.enableReactionPopup ?? false) {
+              showPopUp.value = false;
+            }
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            if (replyPopup?.onReplyTap != null) {
+              replyPopup?.onReplyTap!(message);
+            }
+          },
+          sendByCurrentUser: sendByCurrentUser,
+        ),
+        padding: EdgeInsets.zero,
+      ),
+    )
         .closed;
   }
 
   void _onChatListTap() {
-    if (!kIsWeb && Platform.isIOS) FocusScope.of(context).unfocus();
+    if (!kIsWeb) {
+      print("_onChatListTap");
+      FocusScope.of(context).unfocus();
+    }
     showPopUp.value = false;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
